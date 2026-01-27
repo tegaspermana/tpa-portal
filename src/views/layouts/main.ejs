@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title || 'Portal TPA' %></title>
+  <link href="/public/css/output.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <nav class="bg-white border-b shadow-sm">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="font-semibold">TPA Portal</div>
+      <div class="flex items-center gap-4">
+        <% if (user) { %>
+          <span class="text-sm text-gray-600">Halo, <%= user.full_name %> (<%= user.role %>)</span>
+          <form method="post" action="/auth/logout">
+            <button class="text-sm text-red-600 hover:underline">Keluar</button>
+          </form>
+        <% } %>
+      </div>
+    </div>
+  </nav>
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    <%- body %>
+  </main>
+</body>
+</html>

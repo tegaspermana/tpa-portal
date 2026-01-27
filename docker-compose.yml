@@ -1,0 +1,13 @@
+
+services:
+  web:
+    build: .
+    container_name: tpa-portal
+    ports:
+      - "3000:3000"
+    environment:
+      - SESSION_SECRET=${SESSION_SECRET}
+      - APP_BASE_URL=${APP_BASE_URL}
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
