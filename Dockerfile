@@ -1,10 +1,4 @@
-
-FROM node:20-alpine AS base
-WORKDIR /app
-COPY package.json package-lock.json* ./
-RUN npm install --silent
-COPY . .
-RUN npm run css:build
-EXPOSE 3000
-ENV NODE_ENV=production
-CMD ["node", "src/app.js"]
+FROM alpine:latest
+LABEL Name=tpaalfalah Version=0.0.1
+RUN apk add --no-cache fortune
+ENTRYPOINT ["sh", "-c", "fortune -a | cat"]
