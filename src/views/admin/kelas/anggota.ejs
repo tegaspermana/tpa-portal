@@ -1,0 +1,62 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anggota Kelas - <%= kelas.name %></title>
+  <link href="/public/css/output.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50">
+  <div class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+    <div class="flex items-center justify-between">
+      <h1 class="text-2xl font-semibold">Anggota: <%= kelas.name %></h1>
+      <a class="text-sm text-gray-700 underline" href="/admin/kelas">Kembali</a>
+    </div>
+
+    <div class="bg-white p-4 rounded shadow">
+      <h2 class="font-semibold mb-3">Tambah Anggota</h2>
+      <form method="post" action="/admin/kelas/<%= kelas.id %>/anggota" class="flex gap-2 items-center">
+        <select name="santri_id" class="border rounded px-3 py-2" required>
+          <option value="">-- pilih santri --</option>
+          <% kandidat.forEach(s => { %>
+            <option value="<%= s.id %>"><%= s.name %> (<%= s.nis %>)</option>
+          <% }) %>
+        </select>
+        <input type="date" name="start_date" class="border rounded px-3 py-2" value="<%= new Date().toISOString().slice(0,10) %>" />
+        <button class="bg-green-600 text-white px-3 py-2 rounded">Tambah</button>
+      </form>
+    </div>
+
+    <div class="bg-white p-4 rounded shadow">
+      <h2 class="font-semibold mb-3">Anggota Aktif</h2>
+      <div class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead class="bg-gray-100 text-sm">
+            <tr>
+              <th class="text-left p-2">NIS</th>
+              <th class="text-left p-2">Nama Santri</th>
+              <th class="text-left p-2">Mulai</th>
+              <th class="text-left p-2">Aksi</th>
+            </tr>
+          </thead>
+          <tbody class="text-sm">
+            <% anggota.forEach(a => { %>
+              <tr class="border-t">
+                <td class="p-2"><%= a.nis %></td>
+                <td class="p-2"><%= a.name %></td>
+                <td class="p-2"><%= a.start_date %></td>
+                <td class="p-2">
+                  <form method="post" action="/admin/kelas/<%= kelas.id %>/anggota/<%= a.id %>/remove" onsubmit="return confirm('Hentikan keanggotaan santri ini?')">
+                    <button class="text-red-600">Hapus</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

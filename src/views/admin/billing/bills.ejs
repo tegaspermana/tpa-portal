@@ -1,0 +1,93 @@
+
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Daftar Tagihan</title>
+<link href="/public/css/output.css" rel="stylesheet"/>
+</head><body class="bg-gray-50">
+<div class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+  <h1 class="text-2xl font-semibold">Daftar Tagihan</h1>
+
+  <form class="flex flex-wrap items-end gap-3" method="get">
+    <div>
+      <label class="text-sm block">Tahun</label>
+      <input name="year" value="<%= filters.year || '' %>" class="border rounded px-3 py-2 w-28"/>
+    </div>
+    <div>
+      <label class="text-sm block">Bulan</label>
+      <input name="month" value="<%= filters.month || '' %>" class="border rounded px-3 py-2 w-24"/>
+    </div>
+    <div>
+      <label class="text-sm block">Status</label>
+      <select name="status" class="border rounded px-3 py-2">
+        <option value="">(semua)</option>
+        <option value="unpaid" <%= filters.status==='unpaid'?'selected':'' %>>Belum Bayar</option>
+        <option value="partial" <%= filters.status==='partial'?'selected':'' %>>Parsial</option>
+        <option value="paid" <%= filters.status==='paid'?'selected':'' %>>Lunas</option>
+      </select>
+    </div>
+    <button class="px-3 py-2 bg-gray-800 text-white rounded">Filter</button>
+  </form>
+
+  <div class="bg-white rounded shadow overflow-x-auto">
+    <table class="min-w-full text-sm">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="text-left p-2">Santri</th>
+          <th class="text-left p-2">Periode</th>
+          <th class="text-left p-2">Nama Tagihan</th>
+          <th class="text-left p-2">Nominal</th>
+          <th class="text-left p-2">Terbayar</th>
+          <th class="text-left p-2">Sisa</th>
+          <th class="text-left p-2">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% bills.forEach(b => { %>
+          <tr class="border-t">
+            <td class="p-2"><%= b.santri_name %> (<%= b.nis %>)</td>
+            <td class="p-2"><%= b.period_year %>-<%= String(b.period_month).padStart(2,'0') %></td>
+            <td class="p-2"><%= b.name %></td>
+            <td class="p-2"><%= rp(b.amount_due) %></td>
+            <td class="p-2"><%= rp(b.amount_paid) %></td>
+            <td class="p-2"><%= rp(b.amount_due - b.amount_paid) %></td>
+            <td class="p-2"><%= b.status %></td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="bg-white rounded shadow p-4">
+    <h2 class="font-semibold mb-2">Tambah Tagihan Manual</h2>
+    /admin/billing/bills/manual
+      <div class="flex flex-wrap items-end gap-3">
+        <div>
+          <label class="text-sm block">Santri</label>
+          <select name="santri_id" class="border rounded px-3 py-2">
+            <% santriAll.forEach(s => { %>
+              <option value="<%= s.id %>"><%= s.name %> (<%= s.nis %>)</option>
+            <% }) %>
+          </select>
+        </div>
+        <div>
+          <label class="text-sm block">Nama</label>
+          <input name="name" class="border rounded px-3 py-2" placeholder="Contoh: Biaya Ujian"/>
+        </div>
+        <div>
+          <label class="text-sm block">Tahun</label>
+          <input name="year" class="border rounded px-3 py-2 w-28" required/>
+        </div>
+        <div>
+          <label class="text-sm block">Bulan</label>
+          <input name="month" class="border rounded px-3 py-2 w-24" required/>
+        </div>
+        <div>
+          <label class="text-sm block">Nominal</label>
+          <input name="amount_due" class="border rounded px-3 py-2 w-36" type="number" required/>
+        </div>
+        <button class="px-3 py-2 bg-green-600 text-white rounded">Tambah</button>
+      </div>
+    </form>
+  </div>
+</div>
+</body></html>

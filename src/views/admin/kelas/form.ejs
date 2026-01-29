@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= item ? 'Ubah Kelas' : 'Tambah Kelas' %></title>
+  <link href="/public/css/output.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50">
+  <div class="max-w-xl mx-auto px-4 py-6">
+    <h1 class="text-2xl font-semibold mb-4"><%= item ? 'Ubah Kelas' : 'Tambah Kelas' %></h1>
+
+    <form method="post" action="<%= item ? ('/admin/kelas/' + item.id) : '/admin/kelas' %>" class="space-y-4 bg-white p-4 rounded shadow">
+      <div>
+        <label class="text-sm">Nama Kelas</label>
+        <input name="name" value="<%= item ? item.name : '' %>" required class="w-full border rounded px-3 py-2"/>
+      </div>
+      <div>
+        <label class="text-sm">Program</label>
+        <input name="program" value="<%= item ? (item.program||'') : '' %>" class="w-full border rounded px-3 py-2"/>
+      </div>
+      <div class="flex items-center gap-2">
+        <input type="checkbox" name="active" value="1" <%= !item || item.active ? 'checked' : '' %> />
+        <span>Aktif</span>
+      </div>
+      <div class="flex gap-2">
+        <button class="bg-green-600 text-white px-3 py-2 rounded">Simpan</button>
+        <a href="/admin/kelas" class="px-3 py-2 border rounded">Batal</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= item ? 'Ubah Santri' : 'Tambah Santri' %></title>
+  <link href="/public/css/output.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50">
+  <div class="max-w-xl mx-auto px-4 py-6">
+    <h1 class="text-2xl font-semibold mb-4"><%= item ? 'Ubah Santri' : 'Tambah Santri' %></h1>
+
+    <form method="post" action="<%= item ? ('/admin/santri/' + item.id) : '/admin/santri' %>" class="space-y-4 bg-white p-4 rounded shadow">
+      <div>
+        <label class="text-sm">NIS</label>
+        <input name="nis" value="<%= item ? item.nis : '' %>" required class="w-full border rounded px-3 py-2"/>
+      </div>
+      <div>
+        <label class="text-sm">Nama</label>
+        <input name="name" value="<%= item ? item.name : '' %>" required class="w-full border rounded px-3 py-2"/>
+      </div>
+      <div>
+        <label class="text-sm">Tanggal Lahir</label>
+        <input type="date" name="birth_date" value="<%= item && item.birth_date ? item.birth_date.substring(0,10) : '' %>" class="w-full border rounded px-3 py-2"/>
+      </div>
+      <div>
+        <label class="text-sm">Nama Wali</label>
+        <input name="guardian_name" value="<%= item ? (item.guardian_name||'') : '' %>" class="w-full border rounded px-3 py-2"/>
+      </div>
+      <div>
+        <label class="text-sm">No. HP</label>
+        <input name="phone" value="<%= item ? (item.phone||'') : '' %>" class="w-full border rounded px-3 py-2"/>
+      </div>
+      <div class="flex items-center gap-2">
+        <input type="checkbox" name="active" value="1" <%= !item || item.active ? 'checked' : '' %> />
+        <span>Aktif</span>
+      </div>
+      <div class="flex gap-2">
+        <button class="bg-green-600 text-white px-3 py-2 rounded">Simpan</button>
+        <a href="/admin/santri" class="px-3 py-2 border rounded">Batal</a>
+      </div>
+    </form>
+  </div>
+</body>
+</html>

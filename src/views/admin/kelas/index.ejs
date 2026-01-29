@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Kelas</title>
+  <link href="/public/css/output.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50">
+  <div class="max-w-6xl mx-auto px-4 py-6">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-2xl font-semibold">Data Kelas</h1>
+      <a href="/admin/kelas/new" class="bg-green-600 text-white px-3 py-2 rounded">+ Tambah Kelas</a>
+    </div>
+
+    <div class="overflow-x-auto bg-white rounded shadow">
+      <table class="min-w-full">
+        <thead class="bg-gray-100 text-sm">
+          <tr>
+            <th class="text-left p-2">Nama</th>
+            <th class="text-left p-2">Program</th>
+            <th class="text-left p-2">Aktif</th>
+            <th class="text-left p-2">Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="text-sm">
+          <% rows.forEach(r => { %>
+            <tr class="border-t">
+              <td class="p-2"><%= r.name %></td>
+              <td class="p-2"><%= r.program || '-' %></td>
+              <td class="p-2"><%= r.active ? 'Ya' : 'Tidak' %></td>
+              <td class="p-2 flex gap-2">
+                <a href="/admin/kelas/<%= r.id %>/edit" class="text-blue-600">Edit</a>
+                <a href="/admin/kelas/<%= r.id %>/anggota" class="text-green-700">Anggota</a>
+                <form method="post" action="/admin/kelas/<%= r.id %>/delete" onsubmit="return confirm('Hapus kelas ini?')">
+                  <button class="text-red-600">Hapus</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

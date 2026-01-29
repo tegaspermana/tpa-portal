@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Pembayaran</title>
+<link href="/public/css/output.css" rel="stylesheet"/>
+</head><body class="bg-gray-50">
+<div class="max-w-6xl mx-auto px-4 py-6 space-y-6">
+  <h1 class="text-2xl font-semibold">Pembayaran</h1>
+
+  <form method="get" class="flex gap-2 items-end">
+    <div>
+      <label class="text-sm block">Santri</label>
+      <select name="santri_id" class="border rounded px-3 py-2">
+        <option value="">-- pilih santri --</option>
+        <% santriAll.forEach(s => { %>
+          <option value="<%= s.id %>" <%= santri_id==s.id?'selected':'' %>><%= s.name %> (<%= s.nis %>)</option>
+        <% }) %>
+      </select>
+    </div>
+    <button class="px-3 py-2 bg-gray-800 text-white rounded">Tampilkan</button>
+  </form>
+
+  <% if (santri_id) { %>
+  <div class="bg-white rounded shadow p-4 space-y-3">
+    <h2 class="font-semibold">Tagihan Outstanding</h2>
+    <form method="post" action="/admin/payments">
+      <input type="hidden" name="santri_id" value="<%= santri_id %>" />
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="text-left p-2">Periode</th>
+              <th class="text-left p-2">Nama</th>
+              <th class="text-left p-2">Sisa</th>
+              <th class="text-left p-2">Alokasi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% bills.forEach(b => { %>
+              <tr class="border-t">
+                <td class="p-2"><%= b.period_year %>-<%= String(b.period_month).padStart(2,'0') %></td>
+                <td class="p-2"><%= b.name %></td>
+                <td class="p-2"><%= rp(b.remain) %></td>
+                <td class="p-2">
+                  <input type="hidden" name="bill_id" value="<%= b.id %>"/>
+                  <input name="allocate" type="number" class="border rounded px-2 py-1 w-32" value="0" min="0" max="<%= b.remain %>"/>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex flex-wrap gap-3 mt-4 items-end">
+        <div>
+          <label class="text-sm block">Metode</label>
+          <select name="method" class="border rounded px-3 py-2">
+            <option value="cash">Cash</option>
+            <option value="transfer">Transfer</option>
+            <option value="other">Lainnya</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-sm block">Total Pembayaran</label>
+          <input name="total_amount" id="total_amount" type="number" class="border rounded px-3 py-2 w-44" value="0"/>
+        </div>
+        <div>
+          <label class="text-sm block">Catatan</label>
+          <input name="notes" class="border rounded px-3 py-2 w-72"/>
+        </div>
+        <button class="px-3 py-2 bg-green-600 text-white rounded">Simpan & Cetak</button>
+        <button type="button" class="px-3 py-2 bg-blue-600 text-white rounded" onclick="fifo()">Isi Otomatis (FIFO)</button>
+      </div>
+    </form>
+    <script>
+      function fifo(){
+        const allocs = Array.from(document.querySelectorAll('input[name=\"allocate\"]'));
+        const remains = Array.from(document.querySelectorAll('input[name=\"allocate\"]').closest ? [] : []);
+        let total = parseInt(document.getElementById('total_amount').value || '0', 10);
+        const rows = document.querySelectorAll('tbody tr');
+        for (const tr of rows) {
+          const remainCell = tr.querySelectorAll('td')[2];
+          const remainText = remainCell.innerText.replace(/[^0-9]/g,'');
+          const remain = parseInt(remainText||'0',10);
+          const input = tr.querySelector('input[name=\"allocate\"]');
+          const a = Math.min(remain, total);
+          input.value = a;
+          total -= a;
+          if (total <= 0) break;
+        }
+      }
+    </script>
+  </div>
+  <% } %>
+</div>
+</body></html>

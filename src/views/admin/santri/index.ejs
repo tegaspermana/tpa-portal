@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Santri</title>
+  <link href="/public/css/output.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50">
+  <div class="max-w-6xl mx-auto px-4 py-6">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-2xl font-semibold">Data Santri</h1>
+      <a href="/admin/santri/new" class="bg-green-600 text-white px-3 py-2 rounded">+ Tambah Santri</a>
+    </div>
+
+    <form method="get" class="mb-4">
+      <input name="q" value="<%= q %>" placeholder="Cari NIS/Nama" class="border px-3 py-2 rounded w-64" />
+      <button class="ml-2 px-3 py-2 bg-gray-800 text-white rounded">Cari</button>
+    </form>
+
+    <div class="overflow-x-auto bg-white rounded shadow">
+      <table class="min-w-full">
+        <thead class="bg-gray-100 text-sm">
+          <tr>
+            <th class="text-left p-2">NIS</th>
+            <th class="text-left p-2">Nama</th>
+            <th class="text-left p-2">Wali</th>
+            <th class="text-left p-2">HP</th>
+            <th class="text-left p-2">Aktif</th>
+            <th class="text-left p-2">Aksi</th>
+          </tr>
+        </thead>
+        <tbody class="text-sm">
+          <% rows.forEach(r => { %>
+            <tr class="border-t">
+              <td class="p-2"><%= r.nis %></td>
+              <td class="p-2"><%= r.name %></td>
+              <td class="p-2"><%= r.guardian_name || '-' %></td>
+              <td class="p-2"><%= r.phone || '-' %></td>
+              <td class="p-2"><%= r.active ? 'Ya' : 'Tidak' %></td>
+              <td class="p-2 flex gap-2">
+                <a href="/admin/santri/<%= r.id %>/edit" class="text-blue-600">Edit</a>
+                <form method="post" action="/admin/santri/<%= r.id %>/delete" onsubmit="return confirm('Hapus santri ini?')">
+                  <button class="text-red-600">Hapus</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

@@ -30,11 +30,15 @@ app.use(
   })
 );
 
-// Expose user to templates
+// expose user + helpers ke template
 app.use((req, res, next) => {
   res.locals.user = req.session.user || null;
+  res.locals.rp = (n) => (typeof n === 'number'
+    ? n.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 })
+    : n);
   next();
 });
+
 
 app.get('/', (req, res) => {
   if (!req.session.user) return res.redirect('/auth/login');

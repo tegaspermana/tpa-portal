@@ -7,4 +7,17 @@ router.get('/', (req, res) => {
   res.render('admin/dashboard');
 });
 
+// ⬇️ Tambahkan baris-baris ini:
+const santriRoutes = require('./admin.santri');
+const kelasRoutes = require('./admin.kelas');
+
+router.use('/santri', santriRoutes);
+router.use('/kelas', kelasRoutes);
+
+const billingRoutes = require('./admin.billing');
+const paymentRoutes = require('./admin.payments');
+router.use('/billing', billingRoutes);
+router.use('/payments', paymentRoutes);
+
+
 module.exports = router;

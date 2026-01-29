@@ -1,0 +1,6 @@
+services:
+  tpaalfalah:
+    image: tpaalfalah
+    build:
+      context: .
+      dockerfile: ./Dockerfile
