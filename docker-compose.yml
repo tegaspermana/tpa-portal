@@ -4,7 +4,7 @@ services:
     build: .
     container_name: tpa-portal
     ports:
-      - "3131:3131"
+      - "3131:3131"   # host:container
     environment:
       - SESSION_SECRET=${SESSION_SECRET}
       - APP_BASE_URL=${APP_BASE_URL}
