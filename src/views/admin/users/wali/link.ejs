@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tautkan Santri - <%= wali.full_name %></title>
+  <link rel="stylesheet" href="/public/css/output.css" />
+</head>
+<body class="bg-gray-50">
+  <div class="max-w-4xl mx-auto px-4 py-6 space-y-6">
+    <div class="flex items-center justify-between">
+      <h1 class="text-2xl font-semibold">Tautkan Santri - <%= wali.full_name %> (<%= wali.username %>)</h1>
+      <a href="/admin/users/wali" class="text-sm text-gray-700 underline">Kembali</a>
+    </div>
+
+    <div class="bg-white p-4 rounded shadow">
+      <h2 class="font-semibold mb-2">Tambah Tautan</h2>
+      <form method="post" action="/admin/users/wali/<%= wali.id %>/link" class="flex gap-2 items-center">
+        <select name="santri_id" class="border rounded px-3 py-2">
+          <% candidates.forEach(s => { %>
+            <option value="<%= s.id %>"><%= s.name %> (<%= s.nis %>)</option>
+          <% }) %>
+        </select>
+        <button class="ml-2 bg-green-600 text-white px-3 py-2 rounded">Tautkan</button>
+      </form>
+    </div>
+
+    <div class="bg-white p-4 rounded shadow">
+      <h2 class="font-semibold mb-2">Santri yang Tertaut</h2>
+      <% if (!linked || linked.length === 0) { %>
+        <div class="text-sm text-gray-500">Belum ada santri tertaut.</div>
+      <% } else { %>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm">
+            <thead class="bg-gray-100">
+              <tr>
+                <th class="text-left p-2">NIS</th>
+                <th class="text-left p-2">Nama</th>
+                <th class="text-left p-2">Aksi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% linked.forEach(s => { %>
+                <tr class="border-t">
+                  <td class="p-2"><%= s.nis %></td>
+                  <td class="p-2"><%= s.name %></td>
+                  <td class="p-2">
+                    <form method="post" action="/admin/users/wali/<%= wali.id %>/unlink/<%= s.id %>"
+                          onsubmit="return confirm('Lepaskan tautan santri ini dari wali?')">
+                      <button class="text-red-600">Lepas</button>
+                    </form>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</body>
+</html>

@@ -19,5 +19,9 @@ const paymentRoutes = require('./admin.payments');
 router.use('/billing', billingRoutes);
 router.use('/payments', paymentRoutes);
 
+const userAdminRoutes = require('./admin.users');
+router.use('/users', userAdminRoutes);
+
+
 
 module.exports = router;

@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pengguna - Wali</title>
+  <link rel="stylesheet" href="/public/css/output.css" />
+</head>
+<body class="bg-gray-50">
+  <div class="max-w-6xl mx-auto px-4 py-6">
+    <div class="flex items-center justify-between mb-4">
+      <h1 class="text-2xl font-semibold">Pengguna - Wali</h1>
+      <a href="/admin/users/wali/new" class="bg-green-600 text-white px-3 py-2 rounded">
+        + Tambah Wali
+      </a>
+    </div>
+
+    <div class="bg-white rounded shadow overflow-x-auto">
+      <table class="min-w-full text-sm">
+        <thead class="bg-gray-100">
+          <tr>
+            <th class="text-left p-2">Username</th>
+            <th class="text-left p-2">Nama</th>
+            <th class="text-left p-2">HP</th>
+            <th class="text-left p-2">Aktif</th>
+            <th class="text-left p-2">Aksi</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (!rows || rows.length === 0) { %>
+            <tr><td colspan="5" class="p-3 text-gray-500">Belum ada data wali.</td></tr>
+          <% } %>
+          <% rows && rows.forEach(u => { %>
+            <tr class="border-t">
+              <td class="p-2"><%= u.username %></td>
+              <td class="p-2"><%= u.full_name %></td>
+              <td class="p-2"><%= u.phone || '-' %></td>
+              <td class="p-2"><%= u.active ? 'Ya' : 'Tidak' %></td>
+              <td class="p-2 space-x-3">
+                <a href="/admin/users/wali/<%= u.id %>/edit" class="text-blue-600">Edit</a>
+                <a href="/admin/users/wali/<%= u.id %>/link" class="text-green-700">Tautkan Santri</a>
+                <form method="post" action="/admin/users/wali/<%= u.id %>/reset-password" class="inline-flex items-center gap-2"
+                      onsubmit="return confirm('Reset password wali ini?')">
+                  <input name="new_password" type="text" class="border rounded px-2 py-1" placeholder="password baru" required />
+                  <button class="text-red-600">Reset Password</button>
+                </form>
+              </td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
