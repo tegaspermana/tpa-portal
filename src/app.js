@@ -49,5 +49,5 @@ app.use('/admin', adminRoutes);
 app.use('/wali', waliRoutes);
 app.use('/teacher', teacherRoutes);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3131;
 app.listen(port, () => console.log(`Running: http://localhost:${port}`));
