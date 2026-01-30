@@ -1,0 +1,104 @@
+
+<!DOCTYPE html><html lang="id"><head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Progres Santri</title>
+<link href="/public/css/output.css" rel="stylesheet" />
+</head><body class="bg-gray-50">
+<div class="max-w-5xl mx-auto px-4 py-6 space-y-6">
+  <h1 class="text-2xl font-semibold">Progres Santri</h1>
+
+  <!-- Pilih santri -->
+  <form method="get" class="flex gap-2 items-end bg-white p-4 rounded shadow">
+    <div>
+      <label class="text-sm block">Santri</label>
+      <select name="santri_id" class="border rounded px-3 py-2 w-72" required>
+        <option value="">-- pilih santri --</option>
+        <% santriAll.forEach(s => { %>
+          <option value="<%= s.id %>" <%= santri_id==s.id ? 'selected':'' %>><%= s.name %> (<%= s.nis %>)</option>
+        <% }) %>
+      </select>
+    </div>
+    <button class="px-3 py-2 bg-gray-800 text-white rounded">Tampilkan</button>
+  </form>
+
+  <% if (santri_id && selected) { %>
+  <div class="bg-white p-4 rounded shadow space-y-4">
+    <div>
+      <div class="text-sm text-gray-600">Input progres untuk:</div>
+      <div class="font-semibold"><%= selected.name %> (NIS: <%= selected.nis %>)</div>
+    </div>
+
+    <!-- Form tambah progres -->
+    <form method="post" action="/teacher/progress" class="grid md:grid-cols-4 gap-3 items-end">
+      <input type="hidden" name="santri_id" value="<%= selected.id %>" />
+      <div>
+        <label class="text-sm block">Tanggal</label>
+        <input type="date" name="date" class="border rounded px-3 py-2 w-full"
+               value="<%= new Date().toISOString().slice(0,10) %>" />
+      </div>
+      <div>
+        <label class="text-sm block">Kategori</label>
+        <select name="category" class="border rounded px-3 py-2 w-full">
+          <option value="iqro">Iqro</option>
+          <option value="quran">Al-Qur'an</option>
+          <option value="hafalan">Hafalan</option>
+          <option value="adab">Adab</option>
+          <option value="lainnya">Lainnya</option>
+        </select>
+      </div>
+      <div class="md:col-span-2">
+        <label class="text-sm block">Nilai / Deskripsi Singkat</label>
+        <input name="value" class="border rounded px-3 py-2 w-full" placeholder="Contoh: Iqro 3 halaman 15" required />
+      </div>
+      <div class="md:col-span-3">
+        <label class="text-sm block">Catatan (opsional)</label>
+        <input name="note" class="border rounded px-3 py-2 w-full" />
+      </div>
+      <div>
+        <button class="px-3 py-2 bg-green-600 text-white rounded w-full">Simpan</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Riwayat -->
+  <div class="bg-white p-4 rounded shadow">
+    <h2 class="font-semibold mb-3">Riwayat Terbaru</h2>
+    <% if (!records || records.length === 0) { %>
+      <div class="text-sm text-gray-500">Belum ada progres.</div>
+    <% } else { %>
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-sm">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="text-left p-2">Tanggal</th>
+              <th class="text-left p-2">Kategori</th>
+              <th class="text-left p-2">Nilai</th>
+              <th class="text-left p-2">Catatan</th>
+              <th class="text-left p-2">Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% records.forEach(r => { %>
+              <tr class="border-t">
+                <td class="p-2"><%= r.date %></td>
+                <td class="p-2"><%= r.category %></td>
+                <td class="p-2"><%= r.value %></td>
+                <td class="p-2"><%= r.note || '-' %></td>
+                <td class="p-2">
+                  <form method="post" action="/teacher/progress/<%= r.id %>/delete"
+                        onsubmit="return confirm('Hapus entri progres ini?')">
+                    <button class="text-red-600">Hapus</button>
+                  </form>
+                </td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    <% } %>
+  </div>
+  <% } %>
+
+</div>
+</body></html>

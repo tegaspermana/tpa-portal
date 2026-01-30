@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>Pengguna - Guru</title>
+<link rel="stylesheet" href="/public/css/output.css" />
+</head>
+<body class="bg-gray-50">
+
+<div class="max-w-6xl mx-auto px-4 py-6">
+
+  <div class="flex items-center justify-between mb-4">
+    <h1 class="text-2xl font-semibold">Pengguna - Guru</h1>
+    <a href="/admin/users/teachers/new" class="bg-green-600 text-white px-3 py-2 rounded">
+      + Tambah Guru
+    </a>
+  </div>
+
+  <div class="bg-white rounded shadow overflow-x-auto">
+    <table class="min-w-full text-sm">
+      <thead class="bg-gray-100">
+        <tr>
+          <th class="text-left p-2">Username</th>
+          <th class="text-left p-2">Nama</th>
+          <th class="text-left p-2">HP</th>
+          <th class="text-left p-2">Aktif</th>
+          <th class="text-left p-2">Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% rows.forEach(u => { %>
+          <tr class="border-t">
+            <td class="p-2"><%= u.username %></td>
+            <td class="p-2"><%= u.full_name %></td>
+            <td class="p-2"><%= u.phone || '-' %></td>
+            <td class="p-2"><%= u.active ? 'Ya' : 'Tidak' %></td>
+            <td class="p-2 space-x-3">
+              <a class="text-blue-600" href="/admin/users/teachers/<%= u.id %>/edit">Edit</a>
+
+              <form action="/admin/users/teachers/<%= u.id %>/reset-password" method="post" class="inline">
+                <input name="new_password" type="text" class="border px-1 py-1 rounded text-sm"
+                       placeholder="password baru" required />
+                <button class="text-red-600 text-sm">Reset PW</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title><%= item ? 'Ubah Guru' : 'Tambah Guru' %></title>
+<link rel="stylesheet" href="/public/css/output.css" />
+</head>
+<body class="bg-gray-50">
+
+<div class="max-w-xl mx-auto px-4 py-6">
+  <h1 class="text-2xl font-semibold mb-4"><%= item ? 'Ubah Guru' : 'Tambah Guru' %></h1>
+
+  <form method="post" action="<%= item ? '/admin/users/teachers/' + item.id : '/admin/users/teachers' %>"
+        class="bg-white p-4 rounded shadow space-y-4">
+
+    <% if (!item) { %>
+    <div>
+      <label class="text-sm block">Username</label>
+      <input name="username" class="border rounded px-3 py-2 w-full" required />
+    </div>
+    <div>
+      <label class="text-sm block">Password Awal</label>
+      <input name="password" type="text" class="border rounded px-3 py-2 w-full" required />
+    </div>
+    <% } %>
+
+    <div>
+      <label class="text-sm block">Nama Lengkap</label>
+      <input name="full_name" class="border rounded px-3 py-2 w-full"
+             value="<%= item ? item.full_name : '' %>" required />
+    </div>
+
+    <div>
+      <label class="text-sm block">No. HP</label>
+      <input name="phone" class="border rounded px-3 py-2 w-full"
+             value="<%= item ? (item.phone || '') : '' %>" />
+    </div>
+
+    <div class="flex items-center gap-2">
+      <input type="checkbox" name="active" value="1" <%= !item || item.active ? 'checked' : '' %> />
+      <span>Aktif</span>
+    </div>
+
+    <div class="flex gap-2">
+      <button class="bg-green-600 text-white px-3 py-2 rounded"><%= item ? 'Simpan' : 'Tambah' %></button>
+      <a href="/admin/users/teachers" class="border px-3 py-2 rounded">Batal</a>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>
